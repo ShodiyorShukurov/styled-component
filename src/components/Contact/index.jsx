@@ -9,8 +9,28 @@ import {
   ContactSectionDesc,
 } from "./contact";
 import { Container, BussinesButton } from "../main.js";
+import emailjs from '@emailjs/browser';
+import { useRef } from "react";
+import {  toast } from 'react-toastify';
+
+
+
 
 const Contact = () => {
+
+  const form = useRef();
+
+  const sendEmail = (evt) => {
+    evt.preventDefault();
+
+    emailjs.sendForm('service_rf7l50x', 'template_3yv2cvf', form.current, 'wFhUno1PKxyIBugR_')
+      .then((result) => {
+          console.log(result.text);
+      }, (error) => {
+          toast(error.text);
+      });
+  };
+
   return (
     <>
       <ContactSection>
@@ -24,7 +44,7 @@ const Contact = () => {
             Vivamus mattis eros at sem pulvinar
           </ConatactSectionText>
           <ContactSectionWrapper>
-            <form>
+            <form ref={form} onSubmit={sendEmail}>
               <ContactSectionLabel name>
                 Name
                 <ContactSectionInput type="text" />
